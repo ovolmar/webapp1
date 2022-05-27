@@ -1,2 +1,16 @@
 ---
 # tasks file for setup
+- name: Installing Apache
+  become: true
+  apt:
+    name: apache2
+    state: present
+    update_cache: Yes
+
+- name: Installing index page
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    backup: true
+  notify:
+    - start apache
