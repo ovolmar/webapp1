@@ -1,26 +1,31 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  config-infra:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+      - image: python:3.7-alpine3.11
+  steps:
+    - checkout
+    - add_ssh_keys:
+        fingerprints: [fb:64:18:91:2d:ed:8b:dc:c5:26:00:a7:d4:02:48:25]
+    - run:
+        name: Install Ansible
+        command: | 
+          sudo apt -y install ansible
+    - run:
+        name: Run playbook
+        command: |
+          ansible-playbook -i inventory config.yml
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+
 workflows:
-  say-hello-workflow:
+  deployWorkflow:
     jobs:
-      - say-hello
+      - config-infra
+      
+
+
+# aws ec2 describe-instances \
+# \
+#         --query 'Reservations[*].Instances[*].PublicIpAddress' \
+#       --filters "Name=tag:Project,Values=udacity" \
+#       --output text >> inventory
