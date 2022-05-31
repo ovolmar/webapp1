@@ -1,18 +1,7 @@
 version: 2.1
 orbs:
-  welcome: circleci/node@4.7.0
+  welcome: circleci/node@0.4.1
 jobs:
-  build:
-    executor:
-      name: circleci/welcome-orb@0.4.1
-      tag: '10.4'
-    steps:
-      - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-      - run: npm run test
-
   print_world:
     docker:
       - image: circleci/node:13.8.0
