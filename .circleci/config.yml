@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
     executor:
-      name: node/default
+      name: circleci/welcome-orb@0.4.1
       tag: '10.4'
     steps:
       - checkout
