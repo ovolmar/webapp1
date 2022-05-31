@@ -1,27 +1,72 @@
 version: 2.1
+orbs:
+  welcome: circleci/node@4.7.0
 jobs:
-  config-infra:
-    docker:
-      - image: python:3.7-alpine3.11
-  steps:
-    - checkout
-    - add_ssh_keys:
-        fingerprints: [fb:64:18:91:2d:ed:8b:dc:c5:26:00:a7:d4:02:48:25]
-    - run:
-        name: Install Ansible
-        command: | 
-          sudo apt -y install ansible
-    - run:
-        name: Run playbook
-        command: |
-          ansible-playbook -i inventory config.yml
+  build:
+    executor:
+      name: node/default
+      tag: '10.4'
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm install
+      - run: npm run test
 
+  print_world:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo "Hi lady"
+      
+  
 
 workflows:
-  deployWorkflow:
-    jobs:
-      - config-infra
-      
+  myworkflow:
+    - build
+    - print_world
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#version: 2.1
+# jobs:
+
+#   config-infra:
+#     docker:
+#       - image: python:3.7-alpine3.11
+#   steps:
+#     - checkout
+#     - add_ssh_keys:
+#         fingerprints: [fb:64:18:91:2d:ed:8b:dc:c5:26:00:a7:d4:02:48:25]
+#     - run:
+#         name: Install Ansible
+#         command: | 
+#           sudo apt -y install ansible
+#     - run:
+#         name: Run playbook
+#         command: |
+#           ansible-playbook -i inventory config.yml
+
+
+# workflows:
+#   deployWorkflow:
+#     jobs:
+#       - config-infra
+
 
 
 # aws ec2 describe-instances \
