@@ -1,6 +1,5 @@
 version: 2.1
-orbs:
-  welcome: circleci/node@0.4.1
+
 jobs:
   print_world:
     docker:
