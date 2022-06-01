@@ -1,5 +1,4 @@
 version: 2.1
-
 jobs:
   print_world:
     docker:
@@ -7,12 +6,19 @@ jobs:
     steps:
       - run: echo "Hi lady"
 
+  smoke:
+    docker:
+      - image: circleci/python
+    steps:
+      - checkout
+      - run: echo " my pipeline is << pipeline.id >> and my gitbranch is << pipeline.git.branch >> "
   
 
 workflows:
   myworkflow:
     jobs:
       - print_world
+      - smoke
 
 
 
