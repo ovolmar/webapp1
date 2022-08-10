@@ -13,8 +13,10 @@ jobs:
     steps:
       - checkout
       - run: echo " my pipeline is << pipeline.id >> and my gitbranch is << pipeline.git.branch >> "
-      - command: |
-          ansible-playbook config.yml
+      - run:
+          name: running ansible
+          command: |
+            ansible-playbook config.yml
   
 
 workflows:
