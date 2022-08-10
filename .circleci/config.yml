@@ -4,7 +4,8 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "Hi lady"
+      - run: printf "\n----- checking code out -------\n"
+      - checkout
 
   smoke:
     docker:
@@ -12,6 +13,8 @@ jobs:
     steps:
       - checkout
       - run: echo " my pipeline is << pipeline.id >> and my gitbranch is << pipeline.git.branch >> "
+      - command: |
+          ansible-playbook config.yml
   
 
 workflows:
